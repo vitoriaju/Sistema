@@ -1,26 +1,30 @@
 package view;
 
-import DAO.ClienteDAO;
-import DAO.ProdutoDAO;
-import DAO.FornecedorDAO;
+import controller.ClienteController;
+import controller.ProdutoController;
+import controller.FornecedorController;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 public class MenuConsulta {
-    private Connection conn;
+    private ClienteController clienteController;
+    private ProdutoController produtoController;
+    private FornecedorController fornecedorController;
 
-    public MenuConsulta(Connection conn) {
-        this.conn = conn;
+    public MenuConsulta(
+        ClienteController clienteController,
+        ProdutoController produtoController,
+        FornecedorController fornecedorController
+    ) {
+        this.clienteController = clienteController;
+        this.produtoController = produtoController;
+        this.fornecedorController = fornecedorController;
     }
 
     public void exibirMenu() {
         Scanner sc = new Scanner(System.in);
-        ClienteDAO clienteDAO = new ClienteDAO(conn);
-        ProdutoDAO produtoDAO = new ProdutoDAO(conn);
-        FornecedorDAO fornecedorDAO = new FornecedorDAO(conn);
-
         int opcao;
+
         do {
             System.out.println("\n=== MENU CONSULTA ===");
             System.out.println("1. Listar clientes");
@@ -33,13 +37,13 @@ public class MenuConsulta {
 
             switch (opcao) {
                 case 1:
-                    clienteDAO.listarTodos().forEach(System.out::println);
+                    clienteController.listarClientes().forEach(System.out::println);
                     break;
                 case 2:
-                    produtoDAO.listarTodos().forEach(System.out::println);
+                    produtoController.listarProdutos().forEach(System.out::println);
                     break;
                 case 3:
-                    fornecedorDAO.listarTodos().forEach(System.out::println);
+                    fornecedorController.listarFornecedores().forEach(System.out::println);
                     break;
                 case 0:
                     System.out.println("Voltando ao menu principal...");

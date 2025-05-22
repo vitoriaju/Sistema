@@ -1,5 +1,11 @@
 package view;
 
+import controller.ClienteController;
+import controller.FornecedorController;
+import controller.FuncionarioController;
+import controller.ProdutoController;
+import controller.VendaController;
+
 import java.sql.Connection;
 import java.util.Scanner;
 
@@ -13,6 +19,14 @@ public class MenuPrincipal {
 
     public static void exibirMenu(Connection conn) {
         Scanner sc = new Scanner(System.in);
+
+        // Instanciar controllers uma vez e reaproveitar
+        ClienteController clienteController = new ClienteController(conn);
+        ProdutoController produtoController = new ProdutoController(conn);
+        FornecedorController fornecedorController = new FornecedorController(conn);
+        FuncionarioController funcionarioController = new FuncionarioController(conn);
+        VendaController vendaController = new VendaController(conn);
+
         int opcao;
 
         do {
@@ -24,19 +38,19 @@ public class MenuPrincipal {
             System.out.print("Escolha uma opção: ");
 
             opcao = sc.nextInt();
-            sc.nextLine(); 
+            sc.nextLine();
 
             switch (opcao) {
                 case 1:
-                    MenuCadastro menuCadastro = new MenuCadastro(conn);
+                    MenuCadastro menuCadastro = new MenuCadastro(clienteController, produtoController);
                     menuCadastro.exibirMenu();
                     break;
                 case 2:
-                    MenuConsulta menuConsulta = new MenuConsulta(conn);
+                    MenuConsulta menuConsulta = new MenuConsulta(clienteController, produtoController, fornecedorController);
                     menuConsulta.exibirMenu();
                     break;
                 case 3:
-                    MenuVenda menuVenda = new MenuVenda(conn);
+                    MenuVenda menuVenda = new MenuVenda(clienteController, funcionarioController, produtoController, vendaController);
                     menuVenda.exibirMenu();
                     break;
                 case 0:
@@ -50,6 +64,4 @@ public class MenuPrincipal {
 
         sc.close();
     }
-
-	
 }
